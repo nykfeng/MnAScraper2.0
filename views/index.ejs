@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <script src="script.js" defer></script>
+    <title>M&A Scraper</title>
+</head>
+
+<body>
+    <header>
+        <div class="title">M&A Transaction Scraping</div>
+        <p>version 2.0</p>
+    </header>
+    <main>
+        <h1>Source Websites</h1>
+        <ul>
+            <li><img class="site-logo"
+                    src="https://s23.q4cdn.com/352890316/files/doc_downloads/press_kit/Business-Wire-Logo-Main-Navy.png"
+                    alt="""> Businesswire.com</li>
+          <li><img class=" site-logo filter-green" src="https://www.globenewswire.com/content/logo/white.svg" alt="">
+                Globenewswire.com
+            </li>
+            <li><img class=" site-logo"
+                    src="https://www.prnewswire.com/content/dam/prnewswire/homepage/prn_cision_logo_desktop.png"
+                    alt="pr newswire logo"> PRnewswire.com</li>
+        </ul>
+
+
+        <form action="/result" method='GET'>
+            <label for="date">Get M&A transactions from a specific date. Default is today. Max
+                range 3 days prior.</label>
+            <br />
+            <input type="date" id="startDate" name="chosenDate" />
+            <input type="submit" value="Go to results" />
+        </form>
+
+        <div class="download-section">
+            <button class="download-button">Download</button>
+        </div>
+        <hr />
+
+        <div class='results'>
+            <% if (data.length> 0) {%>
+                <% data.forEach( data=> { %>
+                    <figure class="transaction-box">
+                        <div class="transaction">
+                            <img class="transaction-image" src="<%=data.transactionImage %>" alt="" />
+                        </div>
+                        <div class="transaction transaction-title">
+                            <a href="<%=data.transactionUrl%>">
+                                <%=data.transactionTitle %>
+                            </a>
+                        </div>
+                        <div class="transaction transaction-date">
+                            <%=data.transactionDate%>
+                        </div>
+                    </figure>
+
+
+                    <% }) %>
+                        <% }%>
+        </div>
+    </main>
+
+</body>
+
+</html>
