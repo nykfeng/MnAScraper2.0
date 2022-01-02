@@ -19,7 +19,7 @@ const app = express();
 import prnewswire from "./modules/prnewswire.js";
 import businesswire from "./modules/businesswire.js";
 import globenewswire from "./modules/globenewswire.js";
-import seekingalpha from "./modules/seekingalpha.js";
+// import seekingalpha from "./modules/seekingalpha.js";
 
 import utilities from "./modules/utilities.js";
 import helper from "./modules/helper.js";
