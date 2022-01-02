@@ -19,7 +19,19 @@ const foundChosenDate = {
   finishedDate: false, // Read all the chosen date data until it reached an earlier date (meaning end of reading)
 };
 
-module.exports = {
+// module.exports = {
+//   businesswireUrl,
+//   globenewswireUrl,
+//   prnewswireUrl,
+//   seekingAlphaUrl,
+//   biospaceUrl,
+//   chosenDate,
+//   transactionCount,
+//   foundChosenDate,
+//   dataResults,
+// };
+
+export default {
   businesswireUrl,
   globenewswireUrl,
   prnewswireUrl,

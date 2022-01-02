@@ -1,6 +1,23 @@
 const mainEl = document.querySelector("main");
+const resultEl = document.querySelector(".results");
+const submitBtn = document.querySelector(".submit-button");
 
 const data = [];
+
+const url = window.location.href;
+const chosenDate = url.substring(
+  url.indexOf("chosenDate=") + "chosenDate=".length,
+  url.length
+);
+
+const today = new Date();
+const pickedDate = new Date(chosenDate);
+
+const dayRange = Math.floor((today - pickedDate) / (1000 * 3600 * 24));
+const outOfBoundHtml = "<h1> Day range out of bound! </h1>";
+if (dayRange < 0 || dayRange > 3) {
+  resultEl.insertAdjacentHTML("beforeend", outOfBoundHtml);
+}
 
 mainEl.addEventListener("click", function (e) {
   if (e.target.classList.contains("download-button")) {
@@ -14,7 +31,6 @@ mainEl.addEventListener("click", function (e) {
       url.indexOf("chosenDate=") + "chosenDate=".length,
       url.length
     );
-    console.log(chosenDate);
 
     transactionsEl.forEach((transaction) => {
       const transactionTitle = transaction.querySelector(

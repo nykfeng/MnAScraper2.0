@@ -1,4 +1,6 @@
-const axios = require("axios");
+import axios from "axios";
+// import got from "got";
+// const got = require("got");
 
 // const res = fetch("https://seekingalpha.com/market-news/m-a");
 // const data = res.json();
@@ -10,10 +12,7 @@ const axios = require("axios");
 
 const onePage = async function (url) {
   try {
-    const response = await axios(url, {
-      headers: { "Access-Control-Allow-Origin": "*" },
-    });
-
+    const response = await axios(url);
     return response.data;
   } catch (err) {
     console.log("Error");
@@ -21,4 +20,8 @@ const onePage = async function (url) {
   }
 };
 
-module.exports = { onePage };
+// module.exports = { onePage };
+
+export default {
+  onePage,
+};

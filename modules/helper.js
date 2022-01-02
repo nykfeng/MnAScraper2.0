@@ -1,4 +1,4 @@
-const { builtinModules } = require("module");
+// const { builtinModules } = require("module");
 
 const getDate = function (date) {
   const day = date.getDate();
@@ -30,9 +30,26 @@ const fixPRNewswireTitleString = function (titleString) {
     .replace(/\n/g, "");
 };
 
-module.exports = {
+const dayRangeValidation = function (chosenDate) {
+  const today = new Date();
+  const pickedDate = new Date(chosenDate);
+
+  const dayRange = Math.floor((today - pickedDate) / (1000 * 3600 * 24));
+
+  return dayRange < 0 ? false : dayRange > 3 ? false : true;
+};
+
+// module.exports = {
+//   getDate,
+//   fixDateString,
+//   fixPRNewswireTitleString,
+//   getDateFromSeekingAlpha,
+// };
+
+export default {
   getDate,
   fixDateString,
   fixPRNewswireTitleString,
   getDateFromSeekingAlpha,
+  dayRangeValidation,
 };

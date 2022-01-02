@@ -1,8 +1,14 @@
-const fetch = require("./fetch.js");
-const cheerio = require("cheerio");
-const helper = require("./helper.js");
-const utilities = require("./utilities.js");
-const languageDetect = require("languagedetect");
+// const fetch = require("./fetch.js");
+// const cheerio = require("cheerio");
+// const helper = require("./helper.js");
+// const utilities = require("./utilities.js");
+// const languageDetect = require("languagedetect");
+
+import fetch from "./fetch.js";
+import cheerio from "cheerio";
+import helper from "./helper.js";
+import utilities from "./utilities.js";
+import languageDetect from "languagedetect";
 
 const scrape = async function () {
   let businesswireUrl = utilities.businesswireUrl;
@@ -73,4 +79,8 @@ const scrape = async function () {
   }
 };
 
-module.exports = { scrape };
+// module.exports = { scrape };
+
+export default {
+  scrape,
+};

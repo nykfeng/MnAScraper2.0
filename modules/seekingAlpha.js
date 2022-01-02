@@ -1,7 +1,12 @@
-const fetch = require("./fetch.js");
-const cheerio = require("cheerio");
-const helper = require("./helper.js");
-const utilities = require("./utilities.js");
+// const fetch = require("./fetch.js");
+// const cheerio = require("cheerio");
+// const helper = require("./helper.js");
+// const utilities = require("./utilities.js");
+
+import fetch from "./fetch.js";
+import cheerio from "cheerio";
+import helper from "./helper.js";
+import utilities from "./utilities.js";
 
 const scrape = async function () {
   let seekingAlphaUrl = utilities.seekingAlphaUrl;
@@ -76,4 +81,8 @@ const scrape = async function () {
   //   }
 };
 
-module.exports = { scrape };
+// module.exports = { scrape };
+
+export default {
+  scrape,
+};
