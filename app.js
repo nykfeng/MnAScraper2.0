@@ -5,7 +5,11 @@ const path = require("path"); // needed to set __dirname
 const app = express();
 
 // local modules
-const scraper = require("./modules/scraper.js");
+const prnewswire = require("./modules/prnewswire.js");
+const businesswire = require("./modules/businesswire.js");
+const globenewswire = require("./modules/globenewswire.js");
+const seekingalpha = require("./modules/seekingalpha.js");
+
 const utilities = require("./modules/utilities.js");
 const helper = require("./modules/helper.js");
 
@@ -32,8 +36,11 @@ app.get("/result", async (req, res) => {
   );
   utilities.dataResults = [];
   console.log(utilities.chosenDate);
-  await scraper.prnewswire();
-  console.log(utilities.dataResults);
+  //   await prnewswire.scrape();
+  //   await businesswire.scrape();
+  //   await globenewswire.scrape();
+  await seekingalpha.scrape();
+  //   console.log(utilities.dataResults);
 
   res.render("index", { data: utilities.dataResults });
 });

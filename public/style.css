@@ -113,3 +113,7 @@ a {
 .download-section {
   margin: 15px 0;
 }
+
+.number-of-transaction {
+  font-weight: bold;
+}

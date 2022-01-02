@@ -2,9 +2,10 @@ const fetch = require("./fetch.js");
 const cheerio = require("cheerio");
 const helper = require("./helper.js");
 const utilities = require("./utilities.js");
+const languageDetect = require("languagedetect");
 
-const prnewswire = async function () {
-  let prnewswireUrl = utilities.prnewswireUrl;
+const scrape = async function () {
+  let businesswireUrl = utilities.businesswireUrl;
 
   // This is used to find if the algo found the desired date and then finished going thru the same date
   const foundChosenDate = {
@@ -14,31 +15,24 @@ const prnewswire = async function () {
 
   // While we haven't finished reading the chosen date's data, we continue
   while (!foundChosenDate.finishedDate) {
-    console.log(`Now reading URL -- ${prnewswireUrl}`);
-    const html = await fetch.onePage(prnewswireUrl);
+    console.log(`Now reading URL -- ${businesswireUrl}`);
+    const html = await fetch.onePage(businesswireUrl);
     const $ = cheerio.load(html);
+    const lngDetector = new languageDetect();
 
     // Targeting the HTML element containing each article
-    $("div[lang=en-US]", html).each(function () {
-      let transactionTitle = helper.fixPRNewswireTitleString(
-        $(this).find(".card h3").html()
+    $(".bwNewsList li", html).each(function () {
+      let transactionTitle = $(this).find("span[itemprop*='headline']").text();
+      let transactionUrl =
+        "https://businesswire.com" + $(this).find("a").attr("href");
+      let transactionDate = helper.getDate(
+        new Date($(this).find("time").attr("datetime"))
       );
-      let transactionUrl = `https://www.prnewswire.com${$(this)
-        .find(".newsreleaseconsolidatelink")
-        .attr("href")}`;
-      let transactionDate = $(this).find(".card h3 > small").text();
-      transactionDate = helper.getDate(
-        transactionDate.length < 10
-          ? new Date()
-          : new Date(helper.fixDateString(transactionDate))
-      );
-
-      let transactionImage = $(this).find(".card img").attr("src") || "";
-
-      // console.log(`transactionTitle: ${transactionTitle}`);
-      // console.log(`transactionUrl: ${transactionUrl}`);
-      // console.log(`transactionDate: ${transactionDate}`);
-      // console.log(`transactionImage: ${transactionImage}`);
+      let transactionImage = $(this).find(".bwThumbs img").attr("src") || "";
+      let titleLanguage =
+        lngDetector.detect(transactionTitle).length === 0
+          ? "Foreign"
+          : lngDetector.detect(transactionTitle)[0][0];
 
       // -----------------------------------------------------------------------------
       // If the scraper past over the chosen date (from latest to oldest), the while loop should end
@@ -55,27 +49,28 @@ const prnewswire = async function () {
       ) {
         foundChosenDate.finishedDate = true;
       }
-
       if (transactionDate === utilities.chosenDate) {
-        foundChosenDate.foundDate = true;
-
-        utilities.dataResults.push({
-          transactionTitle,
-          transactionUrl,
-          transactionDate,
-          transactionImage,
-        });
+        utilities.foundChosenDate.foundDate = true;
+        if (titleLanguage === "english") {
+          // We are only interested in English articles
+          utilities.dataResults.push({
+            transactionTitle,
+            transactionUrl,
+            transactionDate,
+            transactionImage,
+          });
+        }
       } else if (
         new Date(transactionDate) - new Date(utilities.chosenDate) < 0 &&
         foundChosenDate.foundDate === true
       ) {
-        foundChosenDate.finishedDate = true; // Used to break out of the while loop when condition breaks
+        foundChosenDate.finishedDate = true;
       }
     });
-    prnewswireUrl = `https://www.prnewswire.com/news-releases/financial-services-latest-news/acquisitions-mergers-and-takeovers-list/${
-      $(".pagination a[aria-label=Next]").attr("href") || ""
+    businesswireUrl = `https://businesswire.com${
+      $("#paging .pagingNext a").attr("href") || ""
     }`;
   }
 };
 
-module.exports = { prnewswire };
+module.exports = { scrape };

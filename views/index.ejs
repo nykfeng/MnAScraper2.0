@@ -41,29 +41,40 @@
         <div class="download-section">
             <button class="download-button">Download</button>
         </div>
-        <hr />
 
-        <div class='results'>
-            <% if (data.length> 0) {%>
-                <% data.forEach( data=> { %>
-                    <figure class="transaction-box">
-                        <div class="transaction">
-                            <img class="transaction-image" src="<%=data.transactionImage %>" alt="" />
-                        </div>
-                        <div class="transaction transaction-title">
-                            <a href="<%=data.transactionUrl%>">
-                                <%=data.transactionTitle %>
-                            </a>
-                        </div>
-                        <div class="transaction transaction-date">
-                            <%=data.transactionDate%>
-                        </div>
-                    </figure>
+        <% if (data.length> 0) { %>
+
+            <div>
+                Total number of transaction for the date is <span class="number-of-transaction">
+                    <%= data.length%>
+                </span>
+            </div>
+
+            <% }%>
+
+                <hr />
+
+                <div class='results'>
+                    <% if (data.length> 0) {%>
+                        <% data.forEach( data=> { %>
+                            <figure class="transaction-box">
+                                <div class="transaction">
+                                    <img class="transaction-image" src="<%=data.transactionImage %>" alt="" />
+                                </div>
+                                <div class="transaction transaction-title">
+                                    <a href="<%=data.transactionUrl%>">
+                                        <%=data.transactionTitle %>
+                                    </a>
+                                </div>
+                                <div class="transaction transaction-date">
+                                    <%=data.transactionDate%>
+                                </div>
+                            </figure>
 
 
-                    <% }) %>
-                        <% }%>
-        </div>
+                            <% }) %>
+                                <% }%>
+                </div>
     </main>
 
 </body>

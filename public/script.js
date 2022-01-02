@@ -5,6 +5,17 @@ const data = [];
 mainEl.addEventListener("click", function (e) {
   if (e.target.classList.contains("download-button")) {
     const transactionsEl = document.querySelectorAll(".transaction-box");
+
+    if (transactionsEl.length < 1) {
+      return;
+    }
+    const url = window.location.href;
+    const chosenDate = url.substring(
+      url.indexOf("chosenDate=") + "chosenDate=".length,
+      url.length
+    );
+    console.log(chosenDate);
+
     transactionsEl.forEach((transaction) => {
       const transactionTitle = transaction.querySelector(
         ".transaction-title a"
@@ -25,7 +36,6 @@ mainEl.addEventListener("click", function (e) {
     ];
 
     data.map((each) => {
-      console.log(each);
       dataToExport.push(
         (/[,]/.test(each.transactionTitle)
           ? `"${each.transactionTitle}"`
@@ -44,7 +54,7 @@ mainEl.addEventListener("click", function (e) {
     const anchorElement = document.createElement("a");
 
     anchorElement.href = blobUrl;
-    anchorElement.download = "M&A Transaction List.csv";
+    anchorElement.download = `M&A Transaction List ${chosenDate}.csv`;
     anchorElement.click();
 
     setTimeout(() => {

@@ -6,6 +6,8 @@ const prnewswireUrl =
   "https://www.prnewswire.com/news-releases/financial-services-latest-news/acquisitions-mergers-and-takeovers-list/?page=1&pagesize=100";
 const biospaceUrl = "https://www.biospace.com/news/mergers-and-acquisitions/";
 
+const seekingAlphaUrl = "https://seekingalpha.com/market-news/m-a";
+
 let chosenDate;
 let dataResults = []; //To store transaction title, url, date, image
 
@@ -21,6 +23,7 @@ module.exports = {
   businesswireUrl,
   globenewswireUrl,
   prnewswireUrl,
+  seekingAlphaUrl,
   biospaceUrl,
   chosenDate,
   transactionCount,
