@@ -57,7 +57,7 @@ app.get("/result", async (req, res) => {
     await businesswire.scrape();
     await globenewswire.scrape();
     //   console.log(utilities.dataResults);
-
+    console.log("Finished reading all pages~!");
     res.render("index", { data: utilities.dataResults });
   } else {
     res.render("index", { data: utilities.dataResults });

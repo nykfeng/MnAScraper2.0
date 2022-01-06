@@ -73,7 +73,7 @@ const scrape = async function () {
         foundChosenDate.finishedDate = true;
       }
     });
-    businesswireUrl = `https://businesswire.com${
+    businesswireUrl = `https://www.businesswire.com${
       $("#paging .pagingNext a").attr("href") || ""
     }`;
   }
