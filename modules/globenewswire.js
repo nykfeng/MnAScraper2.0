@@ -31,8 +31,10 @@ const scrape = async function () {
   // While we haven't finished reading the chosen date's data, we continue
   while (!foundChosenDate.finishedDate) {
     console.log(`Now reading URL -- ${globenewswireUrl}`);
+
     const html = await fetch.onePage(globenewswireUrl);
     const $ = cheerio.load(html);
+
     const lngDetector = new languageDetect();
 
     // Targeting the HTML element containing each article
@@ -93,13 +95,12 @@ const scrape = async function () {
         foundChosenDate.finishedDate = true; // Used to break out of the while loop when condition breaks
       }
     });
+
     globenewswireUrl = `https://www.globenewswire.com${
       $(".pagnition-container .pagnition-next a").attr("href") || ""
     }`;
   }
 };
-
-// module.exports = { scrape };
 
 export default {
   scrape,

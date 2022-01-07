@@ -56,12 +56,20 @@ app.get("/result", async (req, res) => {
     await prnewswire.scrape();
     await businesswire.scrape();
     await globenewswire.scrape();
+
     //   console.log(utilities.dataResults);
     console.log("Finished reading all pages~!");
     res.render("index", { data: utilities.dataResults });
   } else {
     res.render("index", { data: utilities.dataResults });
   }
+});
+
+app.use((err, req, res, next) => {
+  console.log("**************************");
+  console.log("****ERROR****");
+  console.log("**************************");
+  console.log(err);
 });
 
 app.listen(PORT, () => {

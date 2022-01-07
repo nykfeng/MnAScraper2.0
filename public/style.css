@@ -117,3 +117,8 @@ a {
 .number-of-transaction {
   font-weight: bold;
 }
+/* 
+.results {
+  display: grid;
+  place-items: center;
+} */

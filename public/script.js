@@ -10,13 +10,31 @@ const chosenDate = url.substring(
   url.length
 );
 
-const today = new Date();
-const pickedDate = new Date(chosenDate);
+submitBtn.addEventListener("click", function () {
+  if (typeof spinnerEl === "undefined") {
+    const spinnerEl = document.createElement("div");
+    spinnerEl.classList = "lds-spinner";
+    const html = `
+  <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+  `;
+    spinnerEl.insertAdjacentHTML("beforeend", html);
+    resultEl.append(spinnerEl);
+  }
+});
 
-const dayRange = Math.floor((today - pickedDate) / (1000 * 3600 * 24));
-const outOfBoundHtml = "<h1> Day range out of bound! </h1>";
-if (dayRange < 0 || dayRange > 3) {
-  resultEl.insertAdjacentHTML("beforeend", outOfBoundHtml);
+if (url.includes("chosenDate=")) {
+  const today = new Date();
+  const pickedDate = new Date(chosenDate);
+
+  const dayRange = Math.floor((today - pickedDate) / (1000 * 3600 * 24));
+  const outOfBoundHtml =
+    "<h1 class='date-error-text'> Day range out of bound! </h1>";
+  if (dayRange < 0 || dayRange > 3) {
+    const dateErrorTextEl = document.querySelector(".date-error-text");
+    if (!dateErrorTextEl) {
+      resultEl.insertAdjacentHTML("beforeend", outOfBoundHtml);
+    }
+  }
 }
 
 mainEl.addEventListener("click", function (e) {
