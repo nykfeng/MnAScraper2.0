@@ -56,17 +56,19 @@ app.get("/result", async (req, res) => {
 
   if (helper.dayRangeValidation(utilities.chosenDate)) {
     // await businesswire.getData();
+    // await globenewswire.getData();
 
     await prnewswire.getData();
-    await globenewswire.getData();
     await businesswire.getData2();
-
+    await globenewswire.getData2();
     await seekingAlpha.getData();
 
     // if the selected date is today, then run for axios
     if (utilities.chosenDate === helper.getDate(new Date())) {
       await axiosProRata.getData();
     }
+
+    
 
     console.table(utilities.dataResults);
     console.log("Finished reading all pages~!");

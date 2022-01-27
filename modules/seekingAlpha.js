@@ -6,6 +6,7 @@ import puppeteer from "puppeteer";
 
 const getData = async function () {
   let seekingAlphaUrl = utilities.seekingAlphaUrl;
+  let pageNumber = 1;
 
   // This is used to find if the algo found the desired date and then finished going thru the same date
   const foundChosenDate = {
@@ -28,10 +29,13 @@ const getData = async function () {
     try {
       // Targeting the HTML element containing each article
       await page.waitForSelector("[data-test-id=original-market-news-card]");
-    } catch (err) {
-      console.log(err);
-      foundChosenDate.foundDate = true;
-      foundChosenDate.finishedDate = true;
+    } catch (e) {
+      if (e instanceof puppeteer.errors.TimeoutError) {
+        // Do something if this is a timeout.
+        console.log("Seeking alpha error");
+        // break out of the while loop immediately
+        break;
+      }
     }
 
     const data = await page.evaluate(() => {
@@ -58,7 +62,11 @@ const getData = async function () {
         });
       });
 
-      const nextUrl = document.querySelector("a[rel=next]").href;
+      pageNumber++;
+
+      const nextUrl =
+        document.querySelector("a[rel=next]")?.href ||
+        `https://seekingalpha.com/market-news/m-a?page=${pageNumber}`;
 
       return { result, nextUrl };
     });
