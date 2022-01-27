@@ -2,7 +2,7 @@ import helper from "./helper.js";
 import utilities from "./utilities.js";
 import puppeteer from "puppeteer";
 
-const scrape = async function () {
+const getData = async function () {
   const axiosProRataUrl = utilities.axiosProRataUrl;
 
   const browser = await puppeteer.launch();
@@ -22,14 +22,27 @@ const scrape = async function () {
 
     sectionEls.forEach((section) => {
       if (section.textContent === "Private Equity Deals") {
-        const targetEl = section.nextElementSibling.nextElementSibling;
+        let targetEl;
+
+        // Sometimes the site will include a gif file before the article div
+        if (section.nextElementSibling.querySelector('amp-img')) {
+          targetEl = section.nextElementSibling.nextElementSibling;
+        } else {
+          targetEl = section.nextElementSibling;
+        }
         const paragraphEls = targetEl.querySelectorAll("p");
         paragraphEls.forEach((paragraph) => {
           result.push(paragraph.textContent);
         });
       } else if (section.textContent === "More M&A") {
-        const targetEl = section.nextElementSibling.nextElementSibling;
-        targetEl.querySelectorAll("p");
+        let targetEl;
+
+        // Sometimes the site will include a gif file before the article div
+        if (section.nextElementSibling.querySelector('amp-img')) {
+          targetEl = section.nextElementSibling.nextElementSibling;
+        } else {
+          targetEl = section.nextElementSibling;
+        }
         const paragraphEls = targetEl.querySelectorAll("p");
         paragraphEls.forEach((paragraph) => {
           result.push(paragraph.textContent);
@@ -53,5 +66,5 @@ const scrape = async function () {
 };
 
 export default {
-  scrape,
+  getData,
 };

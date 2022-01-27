@@ -19,7 +19,7 @@ const exclusionList = [
   "Market Research Future",
 ];
 
-const scrape = async function () {
+const getData = async function () {
   let globenewswireUrl = utilities.globenewswireUrl;
 
   // This is used to find if the algo found the desired date and then finished going thru the same date
@@ -103,5 +103,5 @@ const scrape = async function () {
 };
 
 export default {
-  scrape,
+  getData,
 };

@@ -4,7 +4,7 @@ import helper from "./helper.js";
 import utilities from "./utilities.js";
 import puppeteer from "puppeteer";
 
-const scrape = async function () {
+const getData = async function () {
   let seekingAlphaUrl = utilities.seekingAlphaUrl;
 
   // This is used to find if the algo found the desired date and then finished going thru the same date
@@ -13,30 +13,40 @@ const scrape = async function () {
     finishedDate: false, // Read all the chosen date data until it reached an earlier date (meaning end of reading)
   };
 
+  const browser = await puppeteer.launch();
+
   // While we haven't finished reading the chosen date's data, we continue
   while (!foundChosenDate.finishedDate) {
     console.log(`Now reading URL -- ${seekingAlphaUrl}`);
-    
 
-    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(seekingAlphaUrl);
 
     // wait for javascript rendered data to load
     await page.waitForTimeout(7000);
 
-    // Targeting the HTML element containing each article
-    await page.waitForSelector(".twA");
+    try {
+      // Targeting the HTML element containing each article
+      await page.waitForSelector("[data-test-id=original-market-news-card]");
+    } catch (err) {
+      console.log(err);
+      foundChosenDate.foundDate = true;
+      foundChosenDate.finishedDate = true;
+    }
 
-    console.log("Gotten twA");
     const data = await page.evaluate(() => {
       const result = [];
-      const items = document.querySelector(".vzA").querySelectorAll(".tcA");
 
-      items.forEach((item) => {
-        let transactionTitle = item.querySelector("a.weD").innerText;
-        // let transactionUrl = item.querySelector("a.miD").href;
-        let transactionDate = item.querySelector(".zkL").innerText;
+      const mainArticleSectionEl = document.querySelector(
+        "[data-test-id=original-market-news-card]"
+      );
+      const articleEls = mainArticleSectionEl.querySelectorAll("article");
+
+      articleEls.forEach((article) => {
+        let transactionTitle = article.textContent;
+        let transactionDate = article.querySelector(
+          "[data-test-id=post-list-date]"
+        ).textContent;
         let transactionUrl = "";
         let transactionImage = "";
 
@@ -52,15 +62,17 @@ const scrape = async function () {
 
       return { result, nextUrl };
     });
+    // after one iteration
+    await page.close();
 
-    await browser.close();
+    seekingAlphaUrl = data.nextUrl;
 
     const articles = data.result;
 
-    console.table(articles);
-    console.log(
-      "----------------------------------------------------------------------------------------"
-    );
+    // console.table(articles);
+    // console.log(
+    //   "----------------------------------------------------------------------------------------"
+    // );
     articles.forEach((eachArticle) => {
       // console.log(each.transactionDate);
       const transactionDate = helper.getDate(
@@ -94,9 +106,10 @@ const scrape = async function () {
         foundChosenDate.finishedDate = true; // Used to break out of the while loop when condition breaks
       }
     });
-
-    seekingAlphaUrl = data.nextUrl;
   }
+  //outside of while loop
+  //We can close the browser
+  await browser.close();
 };
 
 // Targeting the HTML element containing each article
@@ -155,5 +168,5 @@ const scrape = async function () {
 // module.exports = { scrape };
 
 export default {
-  scrape,
+  getData,
 };

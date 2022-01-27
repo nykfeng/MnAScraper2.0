@@ -8,7 +8,7 @@ import cheerio from "cheerio";
 import helper from "./helper.js";
 import utilities from "./utilities.js";
 
-const scrape = async function () {
+const getData = async function () {
   let prnewswireUrl = utilities.prnewswireUrl;
 
   // This is used to find if the algo found the desired date and then finished going thru the same date
@@ -86,5 +86,5 @@ const scrape = async function () {
 // module.exports = { scrape };
 
 export default {
-  scrape,
+  getData,
 };
