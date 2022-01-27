@@ -102,6 +102,13 @@ const getData2 = async function () {
     // wait for javascript rendered data to load
     await page.waitForTimeout(2000);
 
+    try {
+      await page.waitForNavigation();
+    } catch (err) {
+      console.log(err);
+      break;
+    }
+
     // Targeting the HTML element containing each article
     await page.waitForSelector(".bwNewsList li");
 
@@ -136,8 +143,8 @@ const getData2 = async function () {
     // after one iteration
     await page.close();
 
+    console.log(data.nextUrl);
     businesswireUrl = data.nextUrl;
-
 
     // process data and determine if we meet loop ending condition
     data.result.forEach((d) => {
@@ -179,8 +186,6 @@ const getData2 = async function () {
   //outside of while loop
   //We can close the browser
   await browser.close();
-
-
 };
 
 export default {

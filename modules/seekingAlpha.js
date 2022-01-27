@@ -62,18 +62,17 @@ const getData = async function () {
         });
       });
 
-      pageNumber++;
-
-      const nextUrl =
-        document.querySelector("a[rel=next]")?.href ||
-        `https://seekingalpha.com/market-news/m-a?page=${pageNumber}`;
+      const nextUrl = document.querySelector("a[rel=next]")?.href;
 
       return { result, nextUrl };
     });
     // after one iteration
     await page.close();
 
-    seekingAlphaUrl = data.nextUrl;
+    pageNumber++;
+    seekingAlphaUrl =
+      data.nextUrl ||
+      `https://seekingalpha.com/market-news/m-a?page=${pageNumber}`;
 
     const articles = data.result;
 
