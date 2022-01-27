@@ -19,10 +19,12 @@ const app = express();
 import prnewswire from "./modules/prnewswire.js";
 import businesswire from "./modules/businesswire.js";
 import globenewswire from "./modules/globenewswire.js";
+import axiosProRata from "./modules/axiosProRata.js";
 // import seekingalpha from "./modules/seekingalpha.js";
 
 import utilities from "./modules/utilities.js";
 import helper from "./modules/helper.js";
+import seekingAlpha from "./modules/seekingAlpha.js";
 
 const PORT = process.env.PORT || 8080;
 
@@ -35,12 +37,12 @@ app.set("views", "./views");
 app.use(express.static("./public"));
 
 app.get("/", (req, res) => {
-  utilities.dataResults = []; // reset
-  res.render("index", { data: utilities.dataResults });
+  utilities.dataResults = []; // reset, so refresh to main page won't get the old results rendered
+  res.render("index", { data: utilities.dataResults, hasResult: false });
 });
 
 app.get("/result", async (req, res) => {
-  console.log("Got your request for MnA result");
+  console.log("Got your request for M&A results");
   console.log(req.query);
   const { chosenDate } = req.query;
   utilities.chosenDate = helper.getDate(
@@ -57,11 +59,20 @@ app.get("/result", async (req, res) => {
     await businesswire.scrape();
     await globenewswire.scrape();
 
-    //   console.log(utilities.dataResults);
+    // if the selected date is today, then run for axios
+    if (utilities.chosenDate === helper.getDate(new Date())) {
+      await axiosProRata.scrape();
+    }
+    
+
+    console.table(utilities.dataResults);
     console.log("Finished reading all pages~!");
-    res.render("index", { data: utilities.dataResults });
+    res.render("index", {
+      data: utilities.dataResults,
+      hasResult: utilities.dataResults.length === 0 ? false : true,
+    });
   } else {
-    res.render("index", { data: utilities.dataResults });
+    res.render("index", { data: utilities.dataResults, hasResult: false });
   }
 });
 

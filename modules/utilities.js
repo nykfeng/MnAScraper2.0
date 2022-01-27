@@ -8,6 +8,8 @@ const biospaceUrl = "https://www.biospace.com/news/mergers-and-acquisitions/";
 
 const seekingAlphaUrl = "https://seekingalpha.com/market-news/m-a";
 
+const axiosProRataUrl = "https://www.axios.com/newsletters/axios-pro-rata";
+
 let chosenDate;
 let dataResults = []; //To store transaction title, url, date, image
 
@@ -36,6 +38,7 @@ export default {
   globenewswireUrl,
   prnewswireUrl,
   seekingAlphaUrl,
+  axiosProRataUrl,
   biospaceUrl,
   chosenDate,
   transactionCount,

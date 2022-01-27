@@ -1,9 +1,3 @@
-// const fetch = require("./fetch.js");
-// const cheerio = require("cheerio");
-// const helper = require("./helper.js");
-// const utilities = require("./utilities.js");
-// const languageDetect = require("languagedetect");
-
 import fetch from "./fetch.js";
 import cheerio from "cheerio";
 import helper from "./helper.js";
@@ -86,7 +80,61 @@ const scrape = async function () {
   }
 };
 
-// module.exports = { scrape };
+const scrape2 = async function () {
+  let businesswireUrl = utilities.businesswireUrl;
+  const transactions = [];
+
+  const browser = await puppeteer.launch();
+
+
+    const page = await browser.newPage();
+    await page.goto(businesswireUrl);
+
+    // wait for javascript rendered data to load
+    await page.waitForTimeout(3000);
+
+    // Targeting the HTML element containing each article
+    await page.waitForSelector(".bwNewsList li");
+
+    const data = await page.evaluate(() => {
+      const result = [];
+      const articleEls = document.querySelectorAll(".bwNewsList li");
+
+      articleEls.forEach((articleEl) => {
+        const transactionTitle = articleEl.querySelector("span[itemprop*='headline']").textContent;
+        const transactionUrl = "https://businesswire.com" + articleEl.querySelector("a").href;
+        const transactionDate = articleEl.querySelector('time').getAttribute('datetime');
+        const transactionImage = articleEl.querySelector(".bwThumbs img").getAttribute("src")  || "";
+
+        result.push({
+          transactionTitle,
+          transactionDate,
+          transactionUrl,
+          transactionImage,
+        });
+      });
+
+      businesswireUrl = `https://www.businesswire.com${
+        document.querySelector("#paging .pagingNext a").href || ""
+      }`;
+
+      return result;
+    });
+
+    await page.close();
+
+    // to validate the scraped transactions and format data
+    data.forEach( d=> {
+      d.transactionDate = helper.getDate(d.transactionDate)
+    })
+    
+    transactions.push(...data);
+
+
+    
+    
+}
+
 
 export default {
   scrape,
