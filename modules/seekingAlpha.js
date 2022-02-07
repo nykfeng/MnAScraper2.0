@@ -66,6 +66,8 @@ const getData = async function () {
 
       return { result, nextUrl };
     });
+
+    console.log("Page closed");
     // after one iteration
     await page.close();
 
@@ -81,15 +83,14 @@ const getData = async function () {
     //   "----------------------------------------------------------------------------------------"
     // );
     articles.forEach((eachArticle) => {
-      // console.log(each.transactionDate);
       const transactionDate = helper.getDate(
         new Date(helper.seekingalphaDateStrModify(eachArticle.transactionDate))
       );
       const transactionUrl = helper.createGoogleSearchLink(
         eachArticle.transactionTitle
       );
-      // console.log(new Date(utilities.chosenDate));
-      // console.log(transactionDate);
+
+      console.log(transactionDate);
 
       if (
         new Date(transactionDate) - new Date(utilities.chosenDate) < 0 &&

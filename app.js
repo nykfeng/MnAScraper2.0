@@ -20,11 +20,10 @@ import prnewswire from "./modules/prnewswire.js";
 import businesswire from "./modules/businesswire.js";
 import globenewswire from "./modules/globenewswire.js";
 import axiosProRata from "./modules/axiosProRata.js";
-// import seekingalpha from "./modules/seekingalpha.js";
+import seekingAlpha from "./modules/seekingAlpha.js";
 
 import utilities from "./modules/utilities.js";
 import helper from "./modules/helper.js";
-import seekingAlpha from "./modules/seekingAlpha.js";
 
 const PORT = process.env.PORT || 8080;
 
@@ -55,22 +54,22 @@ app.get("/result", async (req, res) => {
   console.log(utilities.chosenDate);
 
   if (helper.dayRangeValidation(utilities.chosenDate)) {
-    // await businesswire.getData();
     // await globenewswire.getData();
+    await globenewswire.getData2();
+
+    // await businesswire.getData();
+    await businesswire.getData2();
 
     await prnewswire.getData();
-    await businesswire.getData2();
-    await globenewswire.getData2();
-    await seekingAlpha.getData();
+
+    // await seekingAlpha.getData();
 
     // if the selected date is today, then run for axios
     if (utilities.chosenDate === helper.getDate(new Date())) {
       await axiosProRata.getData();
     }
 
-    
-
-    console.table(utilities.dataResults);
+    // console.table(utilities.dataResults);
     console.log("Finished reading all pages~!");
     res.render("index", {
       data: utilities.dataResults,

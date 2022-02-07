@@ -40,15 +40,11 @@ const getData = async function () {
 
       let transactionImage = $(this).find(".card img").attr("src") || "";
 
-      // console.log(`transactionTitle: ${transactionTitle}`);
-      // console.log(`transactionUrl: ${transactionUrl}`);
-      // console.log(`transactionDate: ${transactionDate}`);
-      // console.log(`transactionImage: ${transactionImage}`);
 
       // -----------------------------------------------------------------------------
       // If the scraper past over the chosen date (from latest to oldest), the while loop should end
       // The while loop ends when foundChosenDate.finishedDate is true
-      // This condition (foundChosenDate.foundDate === false) is ued because sometimes
+      // This condition (foundChosenDate.foundDate === false) is used because sometimes
       // A chosen date does not have transactions, like weekends
 
       // The first condition of the following if statement means if we reached a day prior the chosen date
@@ -83,7 +79,7 @@ const getData = async function () {
   }
 };
 
-// module.exports = { scrape };
+
 
 export default {
   getData,
