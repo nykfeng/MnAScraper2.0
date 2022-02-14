@@ -17,14 +17,14 @@ const getData = async function () {
   const browser = await puppeteer.launch();
 
   // While we haven't finished reading the chosen date's data, we continue
-  while (!foundChosenDate.finishedDate) {
+  // while (!foundChosenDate.finishedDate) {
     console.log(`Now reading URL -- ${seekingAlphaUrl}`);
 
     const page = await browser.newPage();
     await page.goto(seekingAlphaUrl);
 
     // wait for javascript rendered data to load
-    await page.waitForTimeout(7000);
+    await page.waitForTimeout(5000);
 
     try {
       // Targeting the HTML element containing each article
@@ -34,7 +34,7 @@ const getData = async function () {
         // Do something if this is a timeout.
         console.log("Seeking alpha error");
         // break out of the while loop immediately
-        break;
+        // break;
       }
     }
 
@@ -47,7 +47,7 @@ const getData = async function () {
       const articleEls = mainArticleSectionEl.querySelectorAll("article");
 
       articleEls.forEach((article) => {
-        let transactionTitle = article.textContent;
+        let transactionTitle = article.querySelector('div h3 a').textContent;
         let transactionDate = article.querySelector(
           "[data-test-id=post-list-date]"
         ).textContent;
@@ -71,17 +71,17 @@ const getData = async function () {
     // after one iteration
     await page.close();
 
-    pageNumber++;
-    seekingAlphaUrl =
-      data.nextUrl ||
-      `https://seekingalpha.com/market-news/m-a?page=${pageNumber}`;
+    // pageNumber++;
+    // seekingAlphaUrl =
+    //   data.nextUrl ||
+    //   `https://seekingalpha.com/market-news/m-a?page=${pageNumber}`;
 
     const articles = data.result;
 
-    // console.table(articles);
-    // console.log(
-    //   "----------------------------------------------------------------------------------------"
-    // );
+    console.table(articles);
+    console.log(
+      "----------------------------------------------------------------------------------------"
+    );
     articles.forEach((eachArticle) => {
       const transactionDate = helper.getDate(
         new Date(helper.seekingalphaDateStrModify(eachArticle.transactionDate))
@@ -90,7 +90,6 @@ const getData = async function () {
         eachArticle.transactionTitle
       );
 
-      console.log(transactionDate);
 
       if (
         new Date(transactionDate) - new Date(utilities.chosenDate) < 0 &&
@@ -114,7 +113,7 @@ const getData = async function () {
         foundChosenDate.finishedDate = true; // Used to break out of the while loop when condition breaks
       }
     });
-  }
+  // }
   //outside of while loop
   //We can close the browser
   await browser.close();
