@@ -57,8 +57,8 @@ app.get("/result", async (req, res) => {
     // await globenewswire.getData();
     await globenewswire.getData2();
 
-    await businesswire.getData();
-    // await businesswire.getData2();
+    // await businesswire.getData();
+    await businesswire.getData2();
 
     await prnewswire.getData();
 
