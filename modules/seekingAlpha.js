@@ -14,7 +14,9 @@ const getData = async function () {
     finishedDate: false, // Read all the chosen date data until it reached an earlier date (meaning end of reading)
   };
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
 
   // While we haven't finished reading the chosen date's data, we continue
   // while (!foundChosenDate.finishedDate) {
