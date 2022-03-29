@@ -93,7 +93,6 @@ const getData2 = async function () {
     finishedDate: false, // Read all the chosen date data until it reached an earlier date (meaning end of reading)
   };
   const browser = await puppeteer.launch({
-    headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
