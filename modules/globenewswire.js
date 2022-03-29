@@ -188,7 +188,7 @@ const getData2 = async function () {
     }`;
     i++;
     await timer(3000);
-    console.log(i * 3000);
+    console.log(i * 3000, " milliseconds passed");
   }
   // end of while loop
 };
