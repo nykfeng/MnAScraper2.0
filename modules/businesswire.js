@@ -93,7 +93,8 @@ const getData2 = async function () {
     finishedDate: false, // Read all the chosen date data until it reached an earlier date (meaning end of reading)
   };
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
   while (!foundChosenDate.finishedDate) {
@@ -104,15 +105,21 @@ const getData2 = async function () {
     // wait for javascript rendered data to load
     await page.waitForTimeout(2000);
 
+    // try {
+    //   await page.waitForNavigation();
+    //   console.log("Page ");
+    // } catch (err) {
+    //   console.log(err);
+    //   break;
+    // }
+
     try {
-      await page.waitForNavigation();
+      // Targeting the HTML element containing each article
+      await page.waitForSelector(".bwNewsList li");
     } catch (err) {
       console.log(err);
       break;
     }
-
-    // Targeting the HTML element containing each article
-    await page.waitForSelector(".bwNewsList li");
 
     data = await page.evaluate(() => {
       const result = [];
